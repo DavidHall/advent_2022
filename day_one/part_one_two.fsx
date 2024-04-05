@@ -43,9 +43,17 @@ let groupElves lines =
 
 let grouped = groupElves (Seq.toList input) 
 
-let result_one = grouped |> List.map (List.sum) |> List.max
+let result_one =
+    grouped 
+    |> List.map (List.sum) 
+    |> List.max
 
-let result_two = grouped |> List.map (List.sum) |> List.sortDescending |> (List.take 3) |> List.sum
+let result_two = 
+    grouped 
+    |> List.map (List.sum) 
+    |> List.sortDescending 
+    |> (List.take 3) 
+    |> List.sum
 
-printfn "%A" result_one
-printfn "%A" result_two
+printfn "%i" result_one
+printfn "%i" result_two
