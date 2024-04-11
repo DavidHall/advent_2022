@@ -1,6 +1,6 @@
 def main():
 
-    lines = [ 
+    '''lines = [ 
     '    [D]',    
     '[N] [C]',   
     '[Z] [M] [P]',
@@ -10,17 +10,18 @@ def main():
     'move 3 from 1 to 3',
     'move 2 from 2 to 1',
     'move 1 from 1 to 2'
-    ]
+    ]'''
 
 
-    #with open('input.txt') as file:
-        #lines = file.readlines()
+    with open('input.txt') as file:
+        lines = file.readlines()
 
-    before = stack_and_instruction_parser(lines)
-    after = rearranger(before)
-    top_crates = get_top_crates(after)
-    print(top_crates)
-        #printer(after)
+        before = stack_and_instruction_parser(lines)
+        after = rearranger(before)
+        top_crates = get_top_crates(after)
+        print(after)
+        print(top_crates)
+            #printer(after)
 
     
 
@@ -38,6 +39,11 @@ def stack_and_instruction_parser(input):
         new_line = line.replace('    ', ' ')
         crates = new_line.split(' ') 
         crates = [s.replace("\n", "") for s in crates]
+        if crates[0] == 'move':
+            instruction = []   
+            instruction.extend([int(crates[1]), int(crates[3]) - 1, int(crates[5]) - 1])
+            instructions.append(instruction)
+            continue
 
         for index, crate in enumerate(crates):
             if crate == '':
@@ -45,12 +51,8 @@ def stack_and_instruction_parser(input):
 
             stacks[index].insert(0, crate[1])
         
-        if crates[0] == 'move':
-            instruction = []   
-            instruction.extend([int(crates[1]), int(crates[3]) - 1, int(crates[5]) - 1])
-            instructions.append(instruction)
-            continue
-
+        
+        
     return [stacks, instructions]
     
 def rearranger(input):
@@ -61,9 +63,9 @@ def rearranger(input):
         source = instruction[1]
         target = instruction[2]
         number_of_crates = instruction[0]
-        for i in range(int(number_of_crates)):
-            crate = stacks[source].pop()
-            stacks[target].append(crate)
+        crates = stacks[source][-number_of_crates:]
+        stacks[source] = stacks[source][:-number_of_crates]
+        stacks[target].extend(crates)
 
     return stacks
 
