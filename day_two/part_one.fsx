@@ -1,22 +1,22 @@
-#r "nuget: Unquote"
+#r "nuget: unquote"
 
-open Swensen.Unquote
-open System.IO
-open System.Collections.Generic
-open System
-open System.Linq
+open swensen.unquote
+open system.io
+open system.collections.generic
+open system
+open system.linq
 
 // let input = 
 //     [| 
-//     "A Y";
-//     "B X";
-//     "C Z";
+//     "a y";
+//     "b x";
+//     "c z";
 //     |] 
 //     :> seq<string>
 
 let path = "./input.txt"
 
-let input = File.ReadAllLines(path)
+let input = file.readalllines(path)
 
 type Shape =
     | Rock
