@@ -25,6 +25,8 @@ let path = "./input.txt"
 let input = File.ReadAllLines(path)
 
 type Move = { Count: int; From: int; To: int; }
+type Stack = char list
+type Stacks = Stack list
 
 let parseMove (line: string) =
     let s = line.Split [|' '|]
@@ -68,7 +70,7 @@ let inputList = Seq.toList input
 
 let (stacks,instructions) = parseInput inputList
 
-let applyInstruction (stacks: char list list) (instruction : Move) =
+let applyInstruction (stacks: Stacks) (instruction : Move) =
     let (remainingCrates, crates) = stacks[instruction.From - 1] |> List.splitAt (stacks[instruction.From - 1].Length - instruction.Count)
     let newStack = stacks[instruction.To - 1] @ (crates)
 
@@ -88,9 +90,11 @@ let applyInstruction (stacks: char list list) (instruction : Move) =
 let result = 
     instructions
     |> List.fold(applyInstruction) stacks  
-    |> List.map(List.rev)
-    |> List.map(List.head)
-    |> List.map(string)
+    |> List.map(
+        List.rev 
+        >> List.head 
+        >> string
+    )
     |> String.concat ""
 
 printfn "%A" result 
