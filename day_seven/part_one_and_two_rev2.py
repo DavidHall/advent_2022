@@ -62,4 +62,13 @@ with open('input.txt') as file:
         if database[key] <= 100000:
             total += database[key]
 
-    print(total)
+print(total)
+
+# for part two
+
+unused_space = 70000000 - database['/home']
+space_to_find = 30000000 - unused_space
+candidates = [database[key] for key in database if database[key] > space_to_find]
+solution = min(candidates)
+print(solution)
+
