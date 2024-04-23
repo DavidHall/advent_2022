@@ -27,8 +27,6 @@ let grid =
 
 let dimension = grid |> Array2D.length1
 
-let outerCount = 4 * dimension - 4
-
 let treesToCheck = 
     [for i in 1..(dimension - 2) do 
         for j in 1..(dimension - 2) -> (i, j)
@@ -44,48 +42,19 @@ let countVisible (grid: int array2d) (tree: int * int)  =
     let up = grid[0 .. i - 1, j]
     let down = grid[i + 1 .. (dimension), j]
    
-    // count from left
-    let visibleLeft' =
-        left
-        |> Array.rev
-        |> Array.tryFindIndex(fun f -> f >= height)
+    let directions = [ (left |> Array.rev); right; (up |> Array.rev); down  ]
 
-    let visibleLeft = 
-        match visibleLeft' with
-        | Some i -> i + 1
-        | None -> left.Length
-    
-   
-    let visibleRight' =
-        right
-        |> Array.tryFindIndex(fun f -> f >= height)
+    let result = 
+        directions
+        |> List.map(fun a -> (a |> Array.tryFindIndex(fun f -> f >= height), a.Length))
+        |> List.map(fun x -> 
+            match x with
+            | (Some i, _) -> i + 1
+            | (None, l) -> l
+        )
+        |> List.fold (*) 1
 
-    let visibleRight =
-        match visibleRight' with
-        | Some i -> i + 1
-        | None -> right.Length
-
-    let visibleUp' =
-        up
-        |> Array.rev
-        |> Array.tryFindIndex(fun f -> f >= height)
-
-    let visibleUp =
-        match visibleUp' with
-        | Some i -> i + 1
-        | None -> up.Length
-
-    let visibleDown' =
-        down
-        |> Array.tryFindIndex(fun f -> f >= height)
-
-    let visibleDown =
-        match visibleDown' with
-        | Some i -> i + 1
-        | None -> down.Length
-
-    visibleUp * visibleDown * visibleLeft * visibleRight
-
+    result
 
 let countVisible' = countVisible grid    
 let result = 
@@ -93,5 +62,4 @@ let result =
     |> List.map countVisible'
     |> List.max
 
-printfn "%A" (result)
-
+test <@ result = 335580 @>
