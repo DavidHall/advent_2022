@@ -259,6 +259,7 @@ let run () =
         ]; Children = [] }
 
     test <@ (fst (calculateDirectorySize testDirectoryTwoFiles)) = 15 @>
+    v
 
     let testDirectoryWithChildren = { Name = "test"; Files = [ 
         { Name = "a"; Size = 5 };
